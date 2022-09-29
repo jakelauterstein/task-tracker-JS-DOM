@@ -1,13 +1,25 @@
-let bformEl = document.querySelector('#task-form')
+let formEl = document.querySelector('#task-form')
 let tasksToDoEl = document.getElementById('tasks-to-do');
 
 const createTaskHandler = function(event) {
   event.preventDefault();
 
-  let taskItemEl = document.createElement('li');
-  taskItemEl.textContent = 'kitty litter';
-  taskItemEl.className = 'task-item'
-  tasksToDoEl.appendChild(taskItemEl);
+  let taskNameInput = document.querySelector("input[name='task-name']").value;
+  let taskTypeInput = document.querySelector("select[name='task-type']").value;
+
+  //create list item
+  let listItemEl = document.createElement('li');
+  listItemEl.className = 'task-item';
+  //create div to hold task info and add to list item and give class name
+  let taskInfoEl = document.createElement('div');
+  taskInfoEl.className = 'task-info';
+
+  //add html content to div
+  taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskNameInput + "</h3><span class='task-type'>" + taskTypeInput + "</span>";
+  
+  listItemEl.appendChild(taskInfoEl);
+  // add entire list item to list
+  tasksToDoEl.appendChild(listItemEl);
 }
 
 

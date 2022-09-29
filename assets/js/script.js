@@ -1,7 +1,9 @@
-let buttonEl = document.querySelector('#save-task')
+let bformEl = document.querySelector('#task-form')
 let tasksToDoEl = document.getElementById('tasks-to-do');
 
-const createTaskHandler = function() {
+const createTaskHandler = function(event) {
+  event.preventDefault();
+
   let taskItemEl = document.createElement('li');
   taskItemEl.textContent = 'kitty litter';
   taskItemEl.className = 'task-item'
@@ -9,4 +11,4 @@ const createTaskHandler = function() {
 }
 
 
-buttonEl.addEventListener('click', createTaskHandler)
+formEl.addEventListener('submit', createTaskHandler)

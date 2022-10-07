@@ -5,12 +5,21 @@ let tasksInProgressEl = document.querySelector('#tasks-in-progress')
 let tasksCompletedEl = document.querySelector('#tasks-completed')
 let formEl = document.querySelector('#task-form')
 let tasksToDoEl = document.getElementById('tasks-to-do');
+let tasks = [];
 
 // BEGIN GENERAL FUNCTIONS
 const completeEditTask = function(name, type, id) {
   let taskSelected = document.querySelector(`.task-item[data-task-id='${id}']`);
   taskSelected.querySelector('h3.task-name').textContent = name;
   taskSelected.querySelector('span.task-type').textContent = type;
+
+  // loop thru tasks array and task obj with new content
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(id)) {
+      tasks[i].name = name;
+      tasks[i].type = type
+    }
+  }
   
   formEl.removeAttribute('data-task-id');
   document.querySelector("#save-task").textContent = "Add Task";
@@ -33,6 +42,9 @@ taskInfoEl.className = 'task-info';
 taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
 
 listItemEl.appendChild(taskInfoEl);
+taskDataObj.id = taskIdCounter;
+
+tasks.push(taskDataObj);
 
 let taskActionsEl = createTaskActions(taskIdCounter);
 listItemEl.appendChild(taskActionsEl);
@@ -87,6 +99,17 @@ return actionContainerEl;
 const deleteTask = function(taskId) {
   let taskSelected = document.querySelector(`.task-item[data-task-id='${taskId}']`);
   taskSelected.remove();
+//create new array to hold updated list of tasks
+  var updatedTaskArr = [];
+//loop thru current tasks
+  for (let i = 0; i < tasks.length; i++) {
+    if(tasks[i].id !== parseInt(taskId)) {
+      updatedTaskArr.push(tasks[i]);
+    }
+  }
+//reassign tasks array to be the same as updatedTaskArray
+tasks = updatedTaskArr;
+
 }
 
 const editTask = function(taskId) {
@@ -135,7 +158,8 @@ const taskFormHandler = function(event) {
  //package up data as object
     let taskDataObj = {
       name: taskNameInput,
-      type: taskTypeInput
+      type: taskTypeInput,
+      status: 'to do'
     };
 
     createTaskEl(taskDataObj);
@@ -177,6 +201,13 @@ const taskStatusChangeHandler = function(event) {
   else if (statusValue === "completed") {
     tasksCompletedEl.appendChild(taskSelected);
   }
+
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].id === parseInt(taskId)) {
+      tasks[i].status = statusValue;
+    }
+  }
+  console.log(tasks);
 }
 
 
